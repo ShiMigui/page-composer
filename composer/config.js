@@ -2,9 +2,9 @@ const path = require('path');
 
 const src = path.join(__dirname, '..', 'src/');
 
-const htmcPath = path.join(src, 'htmcs/');
-const pagePath = path.join(src, 'pages/');
-const componentPath = path.join(src, 'components/');
+const htmcPath = path.join(src, 'htmc/');
+const pagePath = path.join(src, 'page/');
+const componentPath = path.join(src, 'component/');
 
 function createGetPathFunction(defaultRoot) {
     /**
@@ -30,4 +30,5 @@ module.exports = {
     getHtmcPath,
     getPagePath,
     getComponentPath,
+    allowedExtensions: ['.html', '.php']
 }
