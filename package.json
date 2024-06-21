@@ -15,7 +15,11 @@
     "HTML",
     "tool"
   ],
-  "author": "shimigui <miguel.nasto@gmail.com>",
+  "author": {
+    "name": "Miguel Nascimento",
+    "email": "miguel.nasto@gmail.com",
+    "url": "https://github.com/ShiMigui"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ShiMigui/page-composer/issues"
