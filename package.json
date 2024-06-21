@@ -1,0 +1,27 @@
+{
+  "name": "page-composer",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShiMigui/page-composer.git"
+  },
+  "keywords": [
+    "web",
+    "page",
+    "composer",
+    "development",
+    "HTML",
+    "tool"
+  ],
+  "author": "shimigui <miguel.nasto@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ShiMigui/page-composer/issues"
+  },
+  "homepage": "https://github.com/ShiMigui/page-composer#readme",
+  "dependencies": {
+    "jsdom": "^24.1.0"
+  }
+}
