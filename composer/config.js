@@ -16,19 +16,24 @@ function createGetPathFunction(defaultRoot) {
     return (fileName = '') => path.join(defaultRoot, fileName);
 }
 
-const getHtmcPath = createGetPathFunction(htmcPath);
-const getPagePath = createGetPathFunction(pagePath);
-const getComponentPath = createGetPathFunction(componentPath);
-
-module.exports = {
-    path: {
+const obj = {
+    paths: {
         src,
         htmcPath,
         pagePath,
         componentPath,
     },
-    getHtmcPath,
-    getPagePath,
-    getComponentPath,
-    allowedExtensions: ['.html', '.php']
+    getHtmcPath: createGetPathFunction(htmcPath),
+    getPagePath: createGetPathFunction(pagePath),
+    getComponentPath: createGetPathFunction(componentPath),
+    allowedExtensions: ['.html', '.php'],
+    validExtension: () => ({ ext: '', allowed: false })
 }
+
+obj.validExtension = (fileName = '') => {
+    let ext = path.extname(fileName);
+    let allowed = obj.allowedExtensions.includes(ext);
+    return { ext, allowed };
+}
+
+module.exports = obj;
