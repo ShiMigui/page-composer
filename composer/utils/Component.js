@@ -1,55 +1,58 @@
-const { extname } = require('path');
 const config = require('../config');
+const fs = require('fs/promises');
 /**
  * Class representing a Component.
  * @param {Object} options - The options for the component.
  * @param {string} options.path - The path of the component.
- * @param {string} options.name - The name of the component.
 */
 class Component {
-    constructor({ path = '', name = '' }) {
-        this.#path = '';
-        this.#name = '';
-        this.#literal = '';
-
-        this.path = path;
-        this.name = name;
-    }
-
     #path = '';
-    #name = '';
     #literal = '';
+    constructor({ path = '' }) {
+        try {
+            if (!path) {
+                throw new Error('[Component.js] The path must not be null or empty!');
+            }
 
-    get name() {
-        return this.#name;
+            let { allowed, ext } = config.validExtension(path);
+            if (!allowed) {
+                throw new Error(`[Component.js] The extension "${ext}" is not allowed!`);
+            }
+
+            this.#path = path;
+            this.#literal = fs.readFile(this.#path, { encoding: 'utf-8' }).then(text => {
+                text = text.replace(/\n/g, '');
+                text = text.replace(/>\s+/g, '>');
+                text = text.replace(/\s{2,}/g, ' ');
+                return text;
+            });
+        }
+        catch (e) {
+            throw e;
+        }
     }
 
-    set name(value = '') {
-        if (!value) {
-            throw new Error('[Component.js] The name must not be null or empty!');
-        }
+    get path() { return this.#path; }
 
-        this.#name = value;
-    }
+    /**
+     * Renders the component content, replacing placeholders with attribute values from $element.
+     * @param {Element} $element The element containing attributes to replace placeholders.
+     * @returns {Promise<string>} A promise that resolves to the rendered content of the component.
+    */
+    async render($element) {
+        let literal = await this.#literal;
 
-    get path() {
-        return this.#path;
-    }
+        let attributes = $element.attributes;
 
-    set path(value = '') {
-        if (!value) {
-            throw new Error('[Component.js] The path must not be null or empty!');
-        }
-
-        if (!config.allowedExtensions.includes(extname(value))) {
-            throw new Error(`[Component.js] The extension "${extname(value)}" is not allowed!`);
-        }
-
-        this.#path = value;
+        return literal.replace(/{{(.*?)}}/g, (match, name) => {
+            name = name.trim();
+            let attributeValue = attributes[name];
+            return attributeValue ? attributeValue.value : `[${name} not found]`;
+        });
     }
 
     toString() {
-        return `Component(${this.path}) ${this.name}${(this.#literal && `:\n${this.#literal}`)}`;
+        return `Component(${this.#path}) ${(this.#literal && `:\n${this.#literal}`)}`;
     }
 };
 
