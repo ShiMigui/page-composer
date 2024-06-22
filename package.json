@@ -1,8 +1,10 @@
 {
   "name": "page-composer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
-  "scripts": {},
+  "scripts": {
+    "build": "node ./composer/scripts/build.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ShiMigui/page-composer.git"
